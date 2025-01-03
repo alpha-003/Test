@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .login-box {
+            width: 350px;
+            background-image: url('https://img.freepik.com/free-vector/gradient-blur-colorful-phone-wallpaper-vector_53876-171597.jpg');
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        .logo {
+            width: 150px;
+            margin-bottom: 20px;
+            border-radius: 100px;
+            height: 150px;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 4px solid #ff007f;
+            background-color: #ffc5d3;
+            border-radius: 15px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .login-form input:focus {
+            border-color: #0095f6;
+        }
+        
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff007f;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .login-button:hover {
+            background-color: #007bb5;
+        }
+        
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .forgot-password a {
+            color: #0095f6;
+            text-decoration: none;
+        }
+        
+        .divider {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .divider span {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .sign-up-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #484547;
+            border: 1px solid #484547;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white
+        }
+        
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        /* Mobile responsiveness */
+        
+        @media (max-width: 600px) {
+            .login-box {
+                width: 90%;
+                padding: 20px;
+            }
+            .logo {
+                width: 120px;
+                margin-bottom: 15px;
+            }
+            .login-button,
+            .sign-up-button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .forgot-password,
+            .divider span {
+                font-size: 12px;
+            }
+        }
+        
+        body {
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(45deg, #00c0f9, #ff1493, #00c0f9, #ff1493);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-box">
+            <img src="https://png.pngtree.com/element_our/png_detail/20180918/colorful-infinity-logo-design-png_104063.jpg" alt="mypagelogin" class="logo">
+            <form id="login-form" method="POST" class="login-form">
+                <input type="text" id="username" placeholder="Username or Gmail" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <div id="error-message" class="error-message"></div>
+                <button class="login-button" type="submit">Log In</button>
+                <p class="forgot-password"><a href="#">Forgot password?</a></p>
+            </form>
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            <a href="signup.html">
+                <button class="sign-up-button">Create New Account</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const usernameOrGmail = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+
+            errorMessage.textContent = '';
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ usernameOrGmail, password })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    alert('Login successful!');
+                    window.location.href = 'home.html';
+                } else {
+                    errorMessage.textContent = result.message;
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Error logging in. Please try again.';
+            }
+        });
+    </script>
+</body>
+
+</html>
